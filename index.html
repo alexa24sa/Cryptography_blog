@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Página Personal - Bautista Coello Alexandra</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Botón flotante de Fun Facts -->
+    <button class="fun-facts-btn" id="funFactsBtn" title="¡Fun Facts sobre mí!">
+        <img src="assets/img/jelly_bread.png" alt="Fun Facts">
+        <span class="pulse-ring"></span>
+    </button>
+
+    <!-- Modal de Fun Facts -->
+    <div class="fun-facts-modal" id="funFactsModal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content bread-note">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3>🌟 Fun Facts sobre mí 🌟</h3>
+            <ul class="fun-facts-list">
+                <li>😴 Me gusta dormir, de hecho es de mis pasatiempos favoritos pero preferí no ponerlo porque suena aburrido</li>
+                <li>🍍 Me gusta Bob Esponja y siempre tuve curiosidad de probar la mermelada de medusa</li>
+                <li>🐱 Tengo 3 gatas y las amo mucho</li>
+                <li>💕 Otra de las cosas que disfruto mucho es dormir pero acompañada de mi novio jajaj, siempre me encanta dormir</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Ambiente Submarino -->
+    <div class="ocean-environment">
+        <!-- Rayos de luz -->
+        <div class="light-rays"></div>
+        
+        <!-- Contenedor de burbujas -->
+        <div class="bubbles-container" id="bubblesContainer"></div>
+        
+        <!-- Flora marina de fondo -->
+        <div class="seaweed-layer left"></div>
+        <div class="seaweed-layer right"></div>
+        
+        <!-- Partículas flotantes -->
+        <div class="floating-particles"></div>
+    </div>
+    
+    <!-- Overlay de entrada con explosión de burbujas -->
+    <div class="entry-animation" id="entryAnimation">
+        <div class="bubble-burst"></div>
+    </div>
+
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#inicio" class="logo">
+                <span class="logo-bubble">ABC</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#sobre-mi"><i class="fas fa-user-circle"></i> Sobre Mí</a></li>
+                <li><a href="#hobbies"><i class="fas fa-heart"></i> Hobbies</a></li>
+                <li><a href="#cripto"><i class="fas fa-lock"></i> Criptografía</a></li>
+                <li><a href="#descargas"><i class="fas fa-download"></i> Descargas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header id="inicio" class="hero-section">
+        <div class="container hero-content">
+            <div class="profile-wrapper">
+                <div class="bubble-ring"></div>
+                <img src="assets/img/perfil.jpg" alt="Foto de Perfil" class="profile-photo">
+            </div>
+            <h1 class="glow-text">Bautista Coello Alexandra</h1>
+            <p class="subtitle-shimmer">Estudiante de Ingeniería en Sistemas Computacionales </p>
+            <div class="wave-divider"></div>
+        </div>
+    </header>
+
+    <section id="sobre-mi" class="section-container">
+        <div class="coral-decoration left"></div>
+        <div class="coral-decoration right"></div>
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Formación y Contacto</h2>
+            
+            <div class="about-grid">
+                <div class="glass-card academic-box">
+                    <div class="card-glow"></div>
+                    <h3><i class="fas fa-school"></i> Formación Académica</h3>
+                    <ul class="academic-list">
+                        <li><strong>Universidad:</strong> Escuela Superior de Cómputo</li>
+                        <li><strong>Carrera:</strong> Ingeniería en Sistemas Computacionales</li>
+                        <li><strong>Semestre actual:</strong> Octavo Semestre</li>
+                        <li><strong>Otros estudios:</strong> Cursos de programación, analista de datos, SQL criptografía, y seguridad informática.</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card contact-box">
+                    <div class="card-glow"></div>
+                    <h3><i class="fas fa-envelope"></i> Contacto Directo</h3>
+                    <p class="contact-email">Correo electrónico: <a href="mailto:alexabc24sa@gmail.com">alexabc24sa@gmail.com</a></p>
+                    
+                    <h3><i class="fas fa-share-alt"></i> Redes Sociales</h3>
+                    <div class="social-buttons">
+                        <a href="https://www.linkedin.com/in/alexandra-bautista-coello-039608283" target="_blank" class="social-btn linkedin">
+                            <i class="fab fa-linkedin-in"></i> LinkedIn
+                        </a>
+                        <a href="https://github.com/alexa24sa" target="_blank" class="social-btn github">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hobbies" class="section-container">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-heart"></i> Mis Hobbies y Actividades</h2>
+
+            <div class="hobbies-main-layout">
+                <!-- Sección de cajas de hobbies -->
+                <div class="hobbies-boxes-section">
+                    <h3 class="subsection-title">Galería de Hobbies</h3>
+                    <div class="boxes-grid">
+                        <!-- Caja 1 -->
+                        <div class="hobby-box">
+                            <div class="box-closed">
+                                <img src="assets/img/box_transition_1.png" alt="Caja cerrada">
+                            </div>
+                            <div class="box-open">
+                                <img src="assets/img/box_transition_2.png" alt="Caja abierta">
+                                <div class="hobby-info-card">
+                                    <img src="assets/img/hobby1.jpg" alt="Hobby 1" class="hobby-photo">
+                                    <p>Salir con mi pareja y amigos a dar una vuelta por la ciudad.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Caja 2 -->
+                        <div class="hobby-box">
+                            <div class="box-closed">
+                                <img src="assets/img/box_transition_1.png" alt="Caja cerrada">
+                            </div>
+                            <div class="box-open">
+                                <img src="assets/img/box_transition_2.png" alt="Caja abierta">
+                                <div class="hobby-info-card">
+                                    <img src="assets/img/hobby2.jpg" alt="Hobby 2" class="hobby-photo">
+                                    <p>Escuchar música y disfrutar de mis playlists favoritas.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Caja 3 -->
+                        <div class="hobby-box">
+                            <div class="box-closed">
+                                <img src="assets/img/box_transition_1.png" alt="Caja cerrada">
+                            </div>
+                            <div class="box-open">
+                                <img src="assets/img/box_transition_2.png" alt="Caja abierta">
+                                <div class="hobby-info-card">
+                                    <img src="assets/img/hobby3.jpg" alt="Hobby 3" class="hobby-photo">
+                                    <p>Hacer manualidades por mi cuenta de cosas lindas como pequeñas piñatas</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sección del refrigerador -->
+                <div class="fridge-section">
+                    <h3 class="subsection-title">Prácticas</h3>
+                    <div class="fridge-container">
+                        <img src="assets/img/fridge_open.jpg" alt="Refrigerador" class="fridge-image">
+                        <div class="fridge-shelves">
+                            <div class="shelf shelf-1">
+                                <a href="#" class="practice-btn-image">
+                                    <img src="assets/img/practica_1.png" alt="Práctica 1">
+                                </a>
+                            </div>
+                            <div class="shelf shelf-2">
+                                <!-- Botones de prácticas irán aquí -->
+                            </div>
+                            <div class="shelf shelf-3">
+                                <!-- Botones de prácticas irán aquí -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 class="subsection-title">Videos de Mis Hobbies</h3>
+            <div class="video-grid">
+                <div class="video-container glass-card">
+                    <div class="card-glow"></div>
+                    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 15px;">
+                        <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;" src="https://www.canva.com/design/DAHCHJs-m8g/cQ8yjjHXftcad6tcBNg59g/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+                    </div>
+                    <p class="canva-link">
+                        <a href="https://www.canva.com/design/DAHCHJs-m8g/cQ8yjjHXftcad6tcBNg59g/watch?utm_content=DAHCHJs-m8g&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener">Mis Hobbies</a> - Presentación de Bautista Coello Alexandra
+                    </p>
+                </div>
+                <div class="video-container glass-card">
+                    <div class="card-glow"></div>
+                    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 15px;">
+                        <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;" src="https://www.canva.com/design/DAHCMhXavSI/XAj4ztrUDGu-Htmx5Dz3Lg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+                    </div>
+                    <p class="canva-link">
+                        <a href="https://www.canva.com/design/DAHCMhXavSI/XAj4ztrUDGu-Htmx5Dz3Lg/watch?utm_content=DAHCMhXavSI&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener">MIS HOBBIES</a> de Bautista Coello Alexandra
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="cripto" class="section-container">
+        <div class="coral-decoration left"></div>
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-lock"></i> El Mundo de la Criptografía</h2>
+
+            <div class="pgp-video-section glass-card">
+                <div class="card-glow"></div>
+                <h3><i class="fas fa-shield-alt"></i> ¿Qué es PGP? (Pretty Good Privacy)</h3>
+                <p>En este video explico los conceptos básicos de PGP y su importancia en la comunicación segura.</p>
+                <div class="video-container main-video">
+                    <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 15px;">
+                        <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;" src="https://www.canva.com/design/DAHCHLme0pI/nrLGgpf9-trLVtsTv_zmIA/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen"></iframe>
+                    </div>
+                    <p class="canva-link">
+                        <a href="https://www.canva.com/design/DAHCHLme0pI/nrLGgpf9-trLVtsTv_zmIA/watch?utm_content=DAHCHLme0pI&utm_campaign=designshare&utm_medium=embeds&utm_source=link" target="_blank" rel="noopener">Ver presentación completa</a> de Bautista Coello Alexandra
+                    </p>
+                </div>
+            </div>
+
+            <div class="crypto-history-box">
+                <h3 class="board-title"><i class="fas fa-history"></i> Alan Turing: El Padre de la Criptografía Moderna</h3>
+                
+                <div class="cork-board">
+                    <!-- Fondo de corcho -->
+                    <div class="cork-background"></div>
+                    
+                    <!-- Post-it 1: Quién fue -->
+                    <div class="post-it yellow clip-1">
+                        <img src="assets/img/clip_1.png" alt="clip" class="clip">
+                        <h4>¿Quién fue?</h4>
+                        <p><strong>Alan Turing (1912–1954)</strong><br>
+                        Matemático, lógico y criptógrafo británico. Su trabajo no solo definió qué es una "computadora", sino que fue crucial para la victoria aliada en la Segunda Guerra Mundial.</p>
+                    </div>
+                    
+                    <!-- Imagen de Turing con papel -->
+                    <div class="paper-note photo clip-2">
+                        <img src="assets/img/paper_1.png" alt="paper" class="paper-bg">
+                        <img src="assets/img/clip_2.png" alt="clip" class="clip">
+                        <img src="assets/img/Turing.jpg" alt="Alan Turing" class="turing-photo">
+                        <p class="photo-caption">Alan Turing en Bletchley Park</p>
+                    </div>
+                    
+                    <!-- Post-it 2: Enigma -->
+                    <div class="post-it pink clip-3">
+                        <img src="assets/img/clip_3.png" alt="clip" class="clip">
+                        <h4>Enigma</h4>
+                        <p>Lideró el equipo en Bletchley Park que logró descifrar los códigos de la máquina Enigma, utilizada por la Alemania nazi para sus comunicaciones militares.</p>
+                    </div>
+                    
+                    <!-- Post-it 3: La Bombe -->
+                    <div class="post-it blue clip-4">
+                        <img src="assets/img/clip_4.png" alt="clip" class="clip">
+                        <h4>La "Bombe"</h4>
+                        <p>Diseñó una máquina electromecánica capaz de descartar miles de configuraciones de Enigma en pocos segundos, permitiendo leer mensajes enemigos casi en tiempo real.</p>
+                    </div>
+                    
+                    <!-- Post-it 4: Impacto -->
+                    <div class="post-it green clip-5">
+                        <img src="assets/img/clip_5.png" alt="clip" class="clip">
+                        <h4>Impacto Histórico</h4>
+                        <p>Se estima que su trabajo acortó la guerra al menos dos años y salvó más de <strong>14 millones de vidas</strong>.</p>
+                    </div>
+                    
+                    <!-- Post-it 5: Legado -->
+                    <div class="post-it yellow clip-7">
+                        <img src="assets/img/clip_7.png" alt="clip" class="clip">
+                        <h4>Legado Teórico</h4>
+                        <p>Antes de la guerra, describió la "Máquina de Turing", el concepto teórico que explica cómo funciona cualquier procesador actual.</p>
+                    </div>
+                    
+                    <!-- Papel 3: El Trágico Final -->
+                    <div class="paper-note final clip-1">
+                        <img src="assets/img/paper_3.png" alt="paper" class="paper-bg">
+                        <img src="assets/img/clip_.png" alt="clip" class="clip">
+                        <h4>El Trágico Final</h4>
+                        <p>A pesar de ser un héroe de guerra, fue procesado en 1952 por su homosexualidad (entonces ilegal en el Reino Unido). Aceptó la castración química para evitar la cárcel y murió dos años después por envenenamiento con cianuro. En 2013, recibió un indulto póstumo por parte de la Reina Isabel II.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="descargas" class="section-container downloads-section">
+        <div class="container">
+            <h2 class="section-title" style="color: white;"><i class="fas fa-download"></i> Centro de Descargas</h2>
+            <p class="subtitle-shimmer">Accede a mis documentos profesionales y credenciales.</p>
+
+            <div class="download-buttons">
+                <a href="assets/docs/CV_ABC.pdf" download="CV_ABC.pdf" class="main-btn download-btn">
+                    <i class="fas fa-file-pdf"></i> Descargar mi CV
+                </a>
+
+                <a href="#" class="main-btn public-key-btn disabled-link">
+                    <i class="fas fa-key"></i> Mi Llave Pública (ECDSA) <br><small>(Próximamente)</small>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container text-center">
+            <div class="footer-waves"></div>
+            <p>© 2023 Bautista Coello Alexandra. Página web personal creada para propósitos académicos.</p>
+            <div class="footer-bubbles"></div>
+        </div>
+    </footer>
+    
+    <!-- Script para animaciones e interactividad -->
+    <script src = "js/bubbles.js" type="text/javascript"></script>
+    <script src="CSS/underwater.js"></script>
+</body>
+</html>
