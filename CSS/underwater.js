@@ -521,4 +521,35 @@ class FunFactsModal {
 document.addEventListener('DOMContentLoaded', () => {
     const funFactsModal = new FunFactsModal();
     funFactsModal.init();
+
+    // ========================================
+    // MENÚ HAMBURGUESA MÓVIL
+    // ========================================
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (hamburgerBtn && navLinks) {
+        // Abrir/cerrar menú al pulsar el botón
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            hamburgerBtn.classList.toggle('active');
+            navLinks.classList.toggle('mobile-open');
+        });
+
+        // Cerrar menú al hacer clic en un enlace
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburgerBtn.classList.remove('active');
+                navLinks.classList.remove('mobile-open');
+            });
+        });
+
+        // Cerrar menú al hacer clic fuera de él
+        document.addEventListener('click', (e) => {
+            if (!hamburgerBtn.contains(e.target) && !navLinks.contains(e.target)) {
+                hamburgerBtn.classList.remove('active');
+                navLinks.classList.remove('mobile-open');
+            }
+        });
+    }
 });
