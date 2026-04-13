@@ -1,0 +1,10 @@
+# Builds intermedios de flet publish (se usa web_apps/ con runtime compartido)
+assets/practicas/web_builds/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+
+# OS
+Thumbs.db
+.DS_Store
