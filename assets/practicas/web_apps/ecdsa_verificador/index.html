@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificador ECDSA — SECP256k1</title>
+    <style>
+        /* ====== Reset & Variables ====== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #0f172a;
+            --card:      #1e293b;
+            --border:    #334155;
+            --blue:      #3b82f6;
+            --blue-hov:  #2563eb;
+            --text:      #e2e8f0;
+            --dim:       #94a3b8;
+            --green:     #22c55e;
+            --red:       #ef4444;
+            --mono-bg:   #0d1117;
+            --mono-fg:   #c9d1d9;
+        }
+
+        html, body { height: 100%; }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            padding: 0 0 40px;
+        }
+
+        /* ====== Header ====== */
+        .header {
+            background: var(--card);
+            padding: 22px 20px 16px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+        .header p {
+            font-size: 0.82rem;
+            color: var(--dim);
+            margin-top: 4px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            color: var(--blue);
+            text-decoration: none;
+            margin-bottom: 10px;
+        }
+        .back-link:hover { text-decoration: underline; }
+
+        /* ====== Container ====== */
+        .container {
+            max-width: 780px;
+            margin: 0 auto;
+            padding: 24px 16px 0;
+        }
+
+        /* ====== Card ====== */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 16px;
+        }
+
+        /* ====== Section label ====== */
+        .sec-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .sec-num {
+            background: var(--blue);
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 700;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .sec-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* ====== File-input row ====== */
+        .input-row {
+            display: flex;
+            align-items: stretch;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            background: var(--bg);
+            margin-bottom: 6px;
+        }
+        .input-row input[type="text"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 9px 12px;
+            color: var(--text);
+            font-size: 0.82rem;
+        }
+        .input-row button {
+            background: var(--card);
+            border: none;
+            border-left: 1px solid var(--border);
+            color: var(--blue);
+            font-size: 0.82rem;
+            padding: 0 14px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .input-row button:hover { background: var(--border); }
+
+        .file-input-real { display: none; }
+
+        /* ====== Textarea ====== */
+        textarea {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            padding: 10px 12px;
+            resize: vertical;
+            outline: none;
+        }
+        textarea:focus { border-color: var(--blue); }
+
+        .hint { font-size: 0.75rem; color: var(--dim); margin-top: 4px; }
+
+        /* ====== Divider ====== */
+        hr { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+
+        /* ====== Verify button ====== */
+        .btn-verify {
+            display: block;
+            width: 100%;
+            padding: 13px;
+            background: var(--blue);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 16px;
+        }
+        .btn-verify:hover { background: var(--blue-hov); }
+        .btn-verify:disabled { background: var(--border); cursor: not-allowed; }
+
+        /* ====== Result badge ====== */
+        .result-badge {
+            display: none;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .result-badge.valid   { background: rgba(34,197,94,0.15);  border: 1px solid var(--green); color: var(--green); }
+        .result-badge.invalid { background: rgba(239,68,68,0.15);  border: 1px solid var(--red);   color: var(--red); }
+
+        /* ====== Log area ====== */
+        .log-label {
+            font-size: 0.78rem;
+            color: var(--dim);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        #log {
+            background: var(--mono-bg);
+            color: var(--mono-fg);
+            font-family: 'Courier New', monospace;
+            font-size: 0.78rem;
+            border-radius: 10px;
+            padding: 14px 16px;
+            min-height: 200px;
+            max-height: 460px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            line-height: 1.55;
+        }
+        .log-title  { color: #58a6ff; font-weight: 700; }
+        .log-valid  { color: #3fb950; font-weight: 700; }
+        .log-invalid{ color: #f85149; font-weight: 700; }
+
+        /* ====== Spinner ====== */
+        .spinner {
+            display: none;
+            width: 18px; height: 18px;
+            border: 3px solid rgba(255,255,255,0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ====== Error toast ====== */
+        .toast {
+            display: none;
+            background: rgba(239,68,68,0.18);
+            border: 1px solid var(--red);
+            color: #fca5a5;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 0.83rem;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="container" style="padding-top:0; padding-bottom:0;">
+        <a href="../../../../index.html" class="back-link">← Volver al inicio</a>
+    </div>
+    <h1>Verificador de Firma Digital</h1>
+    <p>ECDSA &nbsp;•&nbsp; Curva SECP256k1 &nbsp;•&nbsp; SHA-256</p>
+</div>
+
+<div class="container">
+
+    <div class="card">
+        <!-- Sección 1: Llave pública -->
+        <div class="sec-label">
+            <div class="sec-num">1</div>
+            <span class="sec-title">Llave pública del emisor (archivo .txt o pega el hex)</span>
+        </div>
+        <div class="input-row">
+            <input type="text" id="pkPath" placeholder="Ruta del archivo o pega 128 chars hex aquí…" readonly>
+            <button onclick="pickFile('pkFile', 'pkPath', 'pkText')">Explorar…</button>
+        </div>
+        <input type="file" class="file-input-real" id="pkFile" accept=".txt,text/plain">
+        <textarea id="pkText" rows="2" placeholder="…o pega directamente el contenido hex de la llave pública (128 chars)"></textarea>
+        <p class="hint">Formato: 128 caracteres hex sin prefijo &mdash; primeros 64 = Qx, últimos 64 = Qy.</p>
+
+        <hr>
+
+        <!-- Sección 2: Mensaje -->
+        <div class="sec-label">
+            <div class="sec-num">2</div>
+            <span class="sec-title">Archivo del mensaje firmado (.txt)</span>
+        </div>
+        <div class="input-row">
+            <input type="text" id="msgPath" placeholder="Selecciona el archivo del mensaje…" readonly>
+            <button onclick="pickFile('msgFile', 'msgPath', 'msgText')">Explorar…</button>
+        </div>
+        <input type="file" class="file-input-real" id="msgFile" accept=".txt,text/plain">
+        <textarea id="msgText" rows="3" placeholder="…o pega el texto del mensaje aquí"></textarea>
+
+        <hr>
+
+        <!-- Sección 3: Firma -->
+        <div class="sec-label">
+            <div class="sec-num">3</div>
+            <span class="sec-title">Firma hexadecimal &nbsp;(128 chars: r ‖ s)</span>
+        </div>
+        <textarea id="sigText" rows="3" placeholder="Pega aquí los 128 caracteres hexadecimales de la firma (r || s)"></textarea>
+        <p class="hint">Primeros 64 chars = r, últimos 64 chars = s.</p>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <button class="btn-verify" id="btnVerify" onclick="verificar()">
+        <span id="btnLabel">Verificar firma</span>
+        <div class="spinner" id="spinner"></div>
+    </button>
+
+    <div class="result-badge" id="resultBadge"></div>
+
+    <div class="log-label">Detalle del proceso</div>
+    <div id="log"></div>
+
+</div>
+
+<script>
+// ================================================================
+//  Utilidades de archivos
+// ================================================================
+function pickFile(inputId, pathId, textareaId) {
+    const fi = document.getElementById(inputId);
+    fi.onchange = () => {
+        const file = fi.files[0];
+        if (!file) return;
+        document.getElementById(pathId).value = file.name;
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById(textareaId).value = e.target.result.trim();
+        };
+        reader.readAsText(file);
+    };
+    fi.click();
+}
+
+// ================================================================
+//  SECP256k1 — aritmética modular y curva elíptica con BigInt
+// ================================================================
+const CURVE = {
+    p: BigInt("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F"),
+    n: BigInt("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141"),
+    Gx: BigInt("0x79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798"),
+    Gy: BigInt("0x483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8"),
+};
+
+function mod(a, m) {
+    return ((a % m) + m) % m;
+}
+
+// Inverso modular por algoritmo extendido de Euclides
+function modinv(a, m) {
+    let [old_r, r]   = [mod(a, m), m];
+    let [old_s, s]   = [1n, 0n];
+    while (r !== 0n) {
+        const q  = old_r / r;
+        [old_r, r] = [r, old_r - q * r];
+        [old_s, s] = [s, old_s - q * s];
+    }
+    if (old_r !== 1n) throw new Error("El inverso modular no existe");
+    return mod(old_s, m);
+}
+
+// Suma de puntos en la curva (retorna null para el punto en el infinito)
+function pointAdd(P, Q) {
+    const { p } = CURVE;
+    if (P === null) return Q;
+    if (Q === null) return P;
+    const [px, py] = P;
+    const [qx, qy] = Q;
+
+    if (px === qx) {
+        if (mod(py + qy, p) === 0n) return null;   // P + (-P) = ∞
+        // Duplicación de punto
+        const lam = mod(3n * px * px * modinv(2n * py, p), p);
+        const rx = mod(lam * lam - 2n * px, p);
+        const ry = mod(lam * (px - rx) - py, p);
+        return [rx, ry];
+    }
+
+    const lam = mod((qy - py) * modinv(qx - px, p), p);
+    const rx = mod(lam * lam - px - qx, p);
+    const ry = mod(lam * (px - rx) - py, p);
+    return [rx, ry];
+}
+
+// Multiplicación escalar por método doble-y-suma
+function scalarMult(k, P) {
+    let result = null;
+    let addend = P;
+    while (k > 0n) {
+        if (k & 1n) result = pointAdd(result, addend);
+        addend = pointAdd(addend, addend);
+        k >>= 1n;
+    }
+    return result;
+}
+
+// ================================================================
+//  SHA-256 vía WebCrypto
+// ================================================================
+async function sha256Bytes(str) {
+    const buf = new TextEncoder().encode(str);
+    const hash = await crypto.subtle.digest("SHA-256", buf);
+    return new Uint8Array(hash);
+}
+
+function hexFromBytes(bytes) {
+    return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function bigFromHex(h) {
+    h = h.replace(/\s/g, '');
+    if (h.length === 0) return 0n;
+    return BigInt('0x' + h);
+}
+
+function toHex(n) { return '0x' + n.toString(16); }
+
+// ================================================================
+//  UI helpers
+// ================================================================
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 5000);
+}
+
+function setLoading(on) {
+    const btn   = document.getElementById('btnVerify');
+    const label = document.getElementById('btnLabel');
+    const spin  = document.getElementById('spinner');
+    btn.disabled = on;
+    label.style.display = on ? 'none' : 'inline';
+    spin.style.display  = on ? 'block' : 'none';
+}
+
+function logLine(text, cls) {
+    const el = document.getElementById('log');
+    const span = document.createElement('span');
+    if (cls) span.className = cls;
+    span.textContent = text + '\n';
+    el.appendChild(span);
+    el.scrollTop = el.scrollHeight;
+}
+
+function clearLog() {
+    document.getElementById('log').textContent = '';
+}
+
+// ================================================================
+//  Verificación principal
+// ================================================================
+async function verificar() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none';
+
+    const badge = document.getElementById('resultBadge');
+    badge.style.display = 'none';
+    badge.className = 'result-badge';
+    clearLog();
+
+    // --- 1. Leer llave pública ---
+    let pkHex = document.getElementById('pkText').value.trim().replace(/\s/g, '');
+    if (pkHex.length !== 128) {
+        showToast(`La llave pública debe tener 128 caracteres hex (tiene ${pkHex.length}).`);
+        return;
+    }
+    let Qx, Qy;
+    try {
+        Qx = bigFromHex(pkHex.slice(0, 64));
+        Qy = bigFromHex(pkHex.slice(64, 128));
+    } catch {
+        showToast("La llave pública contiene caracteres no hexadecimales.");
+        return;
+    }
+
+    // --- 2. Leer mensaje ---
+    const mensaje = document.getElementById('msgText').value.trim();
+    if (!mensaje) {
+        showToast("Escribe o carga el mensaje a verificar.");
+        return;
+    }
+
+    // --- 3. Leer firma ---
+    const sigHex = document.getElementById('sigText').value.trim().replace(/\s/g, '');
+    if (sigHex.length !== 128) {
+        showToast(`La firma debe tener 128 caracteres hex (tiene ${sigHex.length}).`);
+        return;
+    }
+    let r, s;
+    try {
+        r = bigFromHex(sigHex.slice(0, 64));
+        s = bigFromHex(sigHex.slice(64, 128));
+    } catch {
+        showToast("La firma contiene caracteres no hexadecimales.");
+        return;
+    }
+
+    if (r === 0n || r >= CURVE.n || s === 0n || s >= CURVE.n) {
+        showToast("r o s están fuera del rango válido [1, n-1].");
+        return;
+    }
+
+    // --- Calcular ---
+    setLoading(true);
+
+    try {
+        const { n, Gx, Gy } = CURVE;
+        const G = [Gx, Gy];
+        const Q = [Qx, Qy];
+
+        // Paso 1: e = SHA-256(mensaje) mod n
+        const hashBytes = await sha256Bytes(mensaje);
+        const hashHex   = hexFromBytes(hashBytes);
+        const e = mod(BigInt('0x' + hashHex), n);
+
+        // Paso 2: w = s⁻¹ mod n
+        const w = modinv(s, n);
+
+        // Paso 3: u1 = (e·w) mod n
+        const u1 = mod(e * w, n);
+
+        // Paso 4: u2 = (r·w) mod n
+        const u2 = mod(r * w, n);
+
+        // Paso 5: X = u1·G + u2·Q
+        const u1G = scalarMult(u1, G);
+        const u2Q = scalarMult(u2, Q);
+        const X   = pointAdd(u1G, u2Q);
+
+        if (X === null) throw new Error("El punto X resultó en el punto al infinito.");
+
+        // Paso 6: firma válida si X.x mod n == r
+        const Xx_mod_n = mod(X[0], n);
+        const esValida = (Xx_mod_n === r);
+
+        // --- Mostrar en log ---
+        logLine('  LLAVE PÚBLICA', 'log-title');
+        logLine(`  Qx = ${toHex(Qx)}`);
+        logLine(`  Qy = ${toHex(Qy)}`);
+        logLine('');
+        logLine('  MENSAJE', 'log-title');
+        logLine(`  ${mensaje.length > 200 ? mensaje.slice(0,200)+'…' : mensaje}`);
+        logLine('');
+        logLine('  FIRMA RECIBIDA', 'log-title');
+        logLine(`  r = ${toHex(r)}`);
+        logLine(`  s = ${toHex(s)}`);
+        logLine('');
+        logLine('  PASOS DE VERIFICACIÓN ECDSA', 'log-title');
+        logLine(`  Paso 1  e  = SHA-256(m) mod n`);
+        logLine(`          e  = ${toHex(e)}`);
+        logLine(`  Paso 2  w  = s⁻¹ mod n`);
+        logLine(`          w  = ${toHex(w)}`);
+        logLine(`  Paso 3  u1 = (e·w) mod n`);
+        logLine(`          u1 = ${toHex(u1)}`);
+        logLine(`  Paso 4  u2 = (r·w) mod n`);
+        logLine(`          u2 = ${toHex(u2)}`);
+        logLine(`  Paso 5  X  = u1·G + u2·Q`);
+        logLine(`          Xx = ${toHex(X[0])}`);
+        logLine(`  Paso 6  Xx mod n == r ?`);
+        logLine(`          Xx mod n = ${toHex(Xx_mod_n)}`);
+        logLine(`          r        = ${toHex(r)}`);
+        logLine('');
+
+        badge.style.display = 'block';
+        if (esValida) {
+            logLine('  ✔  FIRMA VÁLIDA — El mensaje es auténtico.', 'log-valid');
+            badge.textContent = '✔  FIRMA VÁLIDA — El mensaje es auténtico';
+            badge.classList.add('valid');
+        } else {
+            logLine('  ✘  FIRMA INVÁLIDA — El mensaje fue alterado o la firma no corresponde.', 'log-invalid');
+            badge.textContent = '✘  FIRMA INVÁLIDA — El mensaje fue alterado o la firma no corresponde';
+            badge.classList.add('invalid');
+        }
+
+    } catch (err) {
+        showToast('Error durante la verificación: ' + err.message);
+    } finally {
+        setLoading(false);
+    }
+}
+</script>
+</body>
+</html>

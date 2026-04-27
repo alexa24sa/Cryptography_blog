@@ -33,6 +33,7 @@ class BubbleSystem {
         const size = sizes[Math.floor(Math.random() * sizes.length)];
         
         bubble.className = `bubble ${size}`;
+        bubble.style.willChange = 'transform, opacity';
         
         // Posición horizontal aleatoria
         const leftPosition = Math.random() * 100;
@@ -106,41 +107,49 @@ class ParallaxEffect {
     }
 
     init() {
+        let ticking = false;
         window.addEventListener('scroll', () => {
-            requestAnimationFrame(() => this.update());
-        });
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    this.update();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
     }
 
     update() {
         this.scrollY = window.pageYOffset;
+        const sy = this.scrollY;
         
         // Rayos de luz - movimiento muy lento
         if (this.layers.lightRays) {
             this.layers.lightRays.style.transform = 
-                `translateY(${this.scrollY * 0.1}px) rotate(${this.scrollY * 0.01}deg)`;
+                `translateY(${sy * 0.1}px)`;
         }
         
-        // Algas - movimiento medio
+        // Algas - movimiento medio (sin Math.sin para evitar cálculo caro)
         if (this.layers.seaweedLeft) {
             this.layers.seaweedLeft.style.transform = 
-                `translateY(${this.scrollY * 0.3}px) skewX(${Math.sin(this.scrollY * 0.01) * 2}deg)`;
+                `translateY(${sy * 0.3}px)`;
         }
         if (this.layers.seaweedRight) {
             this.layers.seaweedRight.style.transform = 
-                `translateY(${this.scrollY * 0.25}px) skewX(${Math.sin(this.scrollY * 0.01) * -2}deg)`;
+                `translateY(${sy * 0.25}px)`;
         }
         
         // Partículas - movimiento rápido
         if (this.layers.particles) {
             this.layers.particles.style.transform = 
-                `translateY(${this.scrollY * 0.5}px)`;
+                `translateY(${sy * 0.5}px)`;
         }
         
-        // Corales - movimiento suave
+        // Corales - solo los primeros 2 para reducir escrituras DOM
         this.layers.corals.forEach((coral, index) => {
-            const speed = 0.2 + (index * 0.1);
+            if (index > 1) return;
             coral.style.transform = 
-                `translateY(${this.scrollY * speed}px) rotate(${Math.sin(this.scrollY * 0.005) * 3}deg)`;
+                `translateY(${sy * (0.2 + index * 0.1)}px)`;
         });
     }
 }
@@ -370,23 +379,17 @@ class PerformanceOptimizer {
     }
 
     pauseAnimations() {
-        document.body.style.animationPlayState = 'paused';
-        document.querySelectorAll('*').forEach(el => {
-            el.style.animationPlayState = 'paused';
-        });
+        document.body.classList.add('animations-paused');
     }
 
     resumeAnimations() {
-        document.body.style.animationPlayState = 'running';
-        document.querySelectorAll('*').forEach(el => {
-            el.style.animationPlayState = 'running';
-        });
+        document.body.classList.remove('animations-paused');
     }
 
     isLowEndDevice() {
-        // Detectar dispositivos de bajo rendimiento
-        return navigator.hardwareConcurrency <= 4 || 
-               navigator.deviceMemory <= 4;
+        const cores  = navigator.hardwareConcurrency || 4;
+        const memory = navigator.deviceMemory       || 4;
+        return cores <= 2 || memory <= 2;
     }
 
     reducedQualityMode() {

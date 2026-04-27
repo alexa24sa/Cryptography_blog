@@ -62,6 +62,7 @@
                 <li><a href="#sobre-mi"><i class="fas fa-user-circle"></i> Sobre Mí</a></li>
                 <li><a href="#hobbies"><i class="fas fa-heart"></i> Hobbies</a></li>
                 <li><a href="#cripto"><i class="fas fa-lock"></i> Criptografía</a></li>
+                <li><a href="#llave-publica"><i class="fas fa-key"></i> Llave Pública</a></li>
                 <li><a href="#descargas"><i class="fas fa-download"></i> Descargas</a></li>
             </ul>
             <button class="hamburger-btn" id="hamburgerBtn" aria-label="Abrir menú de navegación">
@@ -183,23 +184,34 @@
                             <div class="shelf shelf-1">
                                 <a href="assets/practicas/practica1/index.html" class="practice-btn-image" title="Práctica 1 — Curvas Elípticas sobre Fp">
                                     <img src="assets/img/practica_1.png" alt="Práctica 1">
+                                    <span class="practice-label">Práctica 1</span>
                                 </a>
                             </div>
                             <div class="shelf shelf-2">
-                                <a href="assets/practicas/web_apps/calculadora_ecc/index.html" class="practice-btn-text pink" title="Calculadora de Curvas Elípticas">
-                                    <i class="fas fa-calculator"></i>
-                                    <span>Calculadora ECC</span>
+                                <a href="assets/practicas/web_apps/calculadora_ecc/index.html" class="practice-btn-image" title="Calculadora de Curvas Elípticas">
+                                    <img src="assets/img/practica_1.png" alt="Calculadora ECC">
+                                    <span class="practice-label">Calc. ECC</span>
                                 </a>
-                                <a href="assets/practicas/web_apps/calculadora_ecdh/index.html" class="practice-btn-text blue" title="Calculadora ECC + ECDH">
-                                    <i class="fas fa-key"></i>
-                                    <span>Calc. ECC + ECDH</span>
+                                <a href="assets/practicas/web_apps/calculadora_ecdh/index.html" class="practice-btn-image" title="Calculadora ECC + ECDH">
+                                    <img src="assets/img/practica_1.png" alt="Calc. ECC + ECDH">
+                                    <span class="practice-label">Calc. ECC + ECDH</span>
                                 </a>
                             </div>
                             <div class="shelf shelf-3">
-                                <a href="assets/practicas/web_apps/ecdh_visual/index.html" class="practice-btn-text green" title="Simulación Visual ECDH">
-                                    <i class="fas fa-exchange-alt"></i>
-                                    <span>ECDH Visual</span>
+                                <a href="assets/practicas/web_apps/ecdh_visual/index.html" class="practice-btn-image" title="Simulación Visual ECDH">
+                                    <img src="assets/img/practica_1.png" alt="ECDH Visual">
+                                    <span class="practice-label">ECDH Visual</span>
                                 </a>
+                                <a href="assets/practicas/web_apps/ecdsa_verificador/index.html" class="practice-btn-image" title="Verificador ECDSA — Firma Digital">
+                                    <img src="assets/img/practica_1.png" alt="ECDSA">
+                                    <span class="practice-label">ECDSA</span>
+                                </a>
+                            </div>
+                            <div class="shelf shelf-4">
+                                <span class="practice-btn-image disabled" title="ECDH-n Integrantes (Pendiente — compañero)">
+                                    <img src="assets/img/practica_1.png" alt="ECDH-n">
+                                    <span class="practice-label">ECDH-n 🔒</span>
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -312,6 +324,55 @@
         </div>
     </section>
 
+    <!-- ====== LLAVE PÚBLICA ECDSA ====== -->
+    <section id="llave-publica" class="section-container">
+        <div class="container">
+            <h2 class="section-title"><i class="fas fa-key"></i> Llave Pública ECDSA</h2>
+            <p class="subtitle-shimmer">Parámetros públicos para verificar mensajes firmados por mí.</p>
+
+            <div class="glass-card" style="padding: 30px; margin-top: 20px;">
+                <div class="card-glow"></div>
+                <h3 style="color: var(--turquoise); margin-bottom: 18px;"><i class="fas fa-project-diagram"></i> Curva: SECP256k1</h3>
+
+                <div class="pubkey-grid">
+                    <div class="pubkey-item">
+                        <span class="pubkey-label">Primo <em>p</em></span>
+                        <code class="pubkey-val">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F</code>
+                    </div>
+                    <div class="pubkey-item">
+                        <span class="pubkey-label">Orden <em>n</em></span>
+                        <code class="pubkey-val">FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141</code>
+                    </div>
+                    <div class="pubkey-item">
+                        <span class="pubkey-label">Generador <em>Gx</em></span>
+                        <code class="pubkey-val">79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798</code>
+                    </div>
+                    <div class="pubkey-item">
+                        <span class="pubkey-label">Generador <em>Gy</em></span>
+                        <code class="pubkey-val">483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8</code>
+                    </div>
+                    <div class="pubkey-item highlight">
+                        <span class="pubkey-label">Mi clave pública <em>Qx</em></span>
+                        <code class="pubkey-val">4ac32ba556ba8dc5b628ef653ac5fb5eb289bb0f2ec08ec342aa8da8edc8bb28</code>
+                    </div>
+                    <div class="pubkey-item highlight">
+                        <span class="pubkey-label">Mi clave pública <em>Qy</em></span>
+                        <code class="pubkey-val">fd614c665b76ec90915b292519bd808affcae75ee4a9a9c1c24a0641b64581cc</code>
+                    </div>
+                </div>
+
+                <div style="margin-top: 22px; display: flex; gap: 14px; flex-wrap: wrap;">
+                    <a href="assets/docs/llave_publica.txt" download="llave_publica_ECDSA_ABC.txt" class="main-btn download-btn" style="font-size:14px; padding: 10px 20px;">
+                        <i class="fas fa-download"></i> Descargar llave_publica.txt
+                    </a>
+                    <a href="assets/practicas/web_apps/ecdsa_verificador/index.html" class="main-btn" style="background: linear-gradient(135deg,#3b82f6,#60a5fa); font-size:14px; padding: 10px 20px;">
+                        <i class="fas fa-shield-alt"></i> Verificador ECDSA
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="descargas" class="section-container downloads-section">
         <div class="container">
             <h2 class="section-title" style="color: white;"><i class="fas fa-download"></i> Centro de Descargas</h2>
@@ -322,8 +383,8 @@
                     <i class="fas fa-file-pdf"></i> Descargar mi CV
                 </a>
 
-                <a href="#" class="main-btn public-key-btn disabled-link">
-                    <i class="fas fa-key"></i> Mi Llave Pública (ECDSA) <br><small>(Próximamente)</small>
+                <a href="assets/docs/llave_publica.txt" download="llave_publica_ECDSA_ABC.txt" class="main-btn public-key-btn">
+                    <i class="fas fa-key"></i> Mi Llave Pública (ECDSA)
                 </a>
             </div>
         </div>
